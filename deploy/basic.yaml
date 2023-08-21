@@ -1,0 +1,90 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: stablediffusion
+  annotations: {}
+  labels: {}
+spec:
+  accessModes:
+    - ReadWriteMany
+  capacity:
+    storage: 100Gi
+  storageClassName: default
+  vsphereVolume:
+    fsType: ext4
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: stablediffusion
+  annotations: {}
+  labels: {}
+  namespace: default
+spec:
+  selector:
+    matchLabels: {}
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 100Gi
+  storageClassName: default
+  volumeName: stablediffusion
+accessModes:
+  - ReadWriteMany
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stablediffusion
+  annotations: {}
+  labels:
+    workload.user.cattle.io/workloadselector: apps.deployment-default-stablediffusion
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      workload.user.cattle.io/workloadselector: apps.deployment-default-stablediffusion
+
+  template:
+    metadata:
+      labels:
+        workload.user.cattle.io/workloadselector: apps.deployment-default-stablediffusion
+      namespace: default
+    spec:
+      containers:
+        - imagePullPolicy: Always
+          name: automatic1111
+          securityContext:
+            runAsNonRoot: false
+            readOnlyRootFilesystem: false
+            privileged: false
+            allowPrivilegeEscalation: false
+          _init: false
+          image: harbor.sienarfleet.systems/stablediffusion/automatic1111:latest
+          stdin: false
+          stdinOnce: false
+          tty: false
+          env:
+            - name: CLI_ARGS
+              value: >-
+                --allow-code --medvram --xformers --enable-insecure-extension-access
+                --api
+      imagePullSecrets: []
+      initContainers:
+        - imagePullPolicy: IfNotPresent
+          name: models
+          active: true
+          image: harbor.sienarfleet.systems/stablediffusion/download:latest
+          command:
+            - /docker/init.sh
+          args:
+            - /data
+          volumeMounts:
+            - name: vol-asbdr
+              mountPath: /data
+              subPath: /data
+      restartPolicy: Always
+      volumes: []
+  replicas: 1
