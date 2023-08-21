@@ -1,0 +1,19 @@
+#!/bin/bash
+
+if [ -z $REGISTRY ];
+then
+    echo "Please set the REGISTRY environment variable with your target registry"
+    exit 1
+fi
+
+echo "Building all Images for target registry: $REGISTRY"
+
+# Keeping this scalable, let's just loop on all directories
+for d in */; do
+    echo "Building $d"
+    pushd $d
+        docker build -t $REGISTRY/stablediffusion/$d .
+    popd
+done
+
+echo "Finished"
