@@ -11,9 +11,9 @@ export DOCKER_BUILDKIT=1
 
 # Keeping this scalable, let's just loop on all directories
 for d in */; do
-    echo "Building $d"
+    echo "Building ${d%%+(/)}"
     pushd $d
-        docker build -t $REGISTRY/stablediffusion/$d .
+        docker build -t $REGISTRY/stablediffusion/${d%%+(/)} .
     popd
 done
 
