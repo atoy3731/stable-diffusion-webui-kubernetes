@@ -24,7 +24,7 @@ parallel --will-cite -a /docker/checksums.sha256 "echo -n {} | sha256sum -c"
 pushd /data
 tar czvf /tmp/data.tgz .
 rm -rf /data/*
-mv /tmp/data.tgz /data
+mv /tmp/data.tgz /docker
 popd
 
 cat <<EOF
