@@ -1,0 +1,85 @@
+           
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stablediffusion
+  annotations: {}
+  labels:
+    app: app.stablediffusion
+  namespace: default
+spec:
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: app.stablediffusion
+  template:
+    metadata:
+      labels:
+        app: app.stablediffusion
+      namespace: default
+    spec:
+      runtimeClassName: nvidia
+      containers:
+        {{- if .Values.comfy.enabled  }}
+        - name: comfyui
+          ports:
+            - containerPort: 8081
+              name: http
+              protocol: TCP
+          image: {{ .Values.comfy.image }}
+          args:
+            - python 
+            - -u 
+            - main.py
+            - --listen 
+{{ toYaml .Values.comfy.cli_args | indent 12 }}
+          volumeMounts:
+            - name: sd-data
+              mountPath: /data
+        {{- end }}
+        {{- if .Values.automatic1111.enabled }}
+        - name: automatic1111
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP
+          image: {{ .Values.automatic1111.image }}
+          args:
+            - python 
+            - -u 
+            - webui.py
+            - --listen 
+            - --allow-code 
+            - --medvram 
+            - --xformers 
+            - --enable-insecure-extension-access 
+            - --api 
+{{ toYaml .Values.automatic1111.cli_args | indent 12 }}
+          {{- end }}
+          volumeMounts:
+            - name: sd-data
+              mountPath: /data
+            - name: sd-output
+              mountPath: /output
+      imagePullSecrets: []
+      initContainers:
+        - imagePullPolicy: {{ .Values.models.pullPolicy }}
+          name: models
+          image: {{ .Values.models.image }}
+          command:
+            - /docker/init.sh
+          args:
+            - /data
+          volumeMounts:
+            - name: sd-data
+              mountPath: /data
+            - name: sd-output
+              mountPath: /output
+      restartPolicy: Always
+      volumes:
+        - persistentVolumeClaim:
+            claimName: {{ .Values.models.pvcName }}
+          name: sd-data
+  replicas: 1

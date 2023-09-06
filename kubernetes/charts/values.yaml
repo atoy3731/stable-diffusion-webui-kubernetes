@@ -1,0 +1,33 @@
+namespace: default
+
+models:
+  image: bcdurden/sd-downloads:latest
+  volumeType: hostPath    
+  hostPath:
+    localDirectory: /sd-data
+  pvcName: pvc-sd-data
+  reclaimPolicy: Retain
+  capacity: 100Gi
+  storageClass: ''
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+
+ingress:
+  enabled: true
+  automatic1111Host: automatic1111.sienarfleet.systems
+  comfyHost: comfy.sienarfleet.systems
+
+comfy:
+  image: bcdurden/comfy:latest
+  enabled: true
+  cli_args: 
+  - --port
+  - "8081"
+automatic1111:
+  image: bcdurden/automatic1111:latest
+  enabled: true
+  cli_args: 
+  - --port 
+  - "8080"

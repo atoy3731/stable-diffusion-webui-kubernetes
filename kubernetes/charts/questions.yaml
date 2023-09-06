@@ -1,0 +1,77 @@
+questions:
+- variable: namespace
+  default: default
+  description: "Specify the target namespace for the application"
+  label: "Namespace"
+  required: true
+  type: string
+  group: "General"
+- variable: models.volumeType
+  default: hostPath
+  description: "The storage volume type for the models (shared between containers)"
+  label: "Storage Volume Type"
+  type: enum
+  required: true
+  options:
+  - hostPath
+  - existing
+  group: "Models"
+- variable: models.hostPath.localDirectory
+  default: /sd-data
+  description: "The location for storing model data on a local host path"
+  label: "HostPath Local Directory"
+  type: string
+  required: true
+  show_if: models.volumeType=hostPath
+  group: "Models"
+- variable: models.pvcName
+  default: pvc-sd-data
+  description: "The PVC name holding the SD models, if existing type is set, this chart will not attempt to provision a volume by this name but will attach the Pod"
+  label: "Existing SD Model PVC Name"
+  type: string
+  required: true
+  group: "Models"
+- variable: models.pullPolicy
+  default: IfNotPresent
+  description: "The Model container pull policy. This can help reduce bandwidth consumption as this file is typically very large"
+  label: "Model Pull Policy"
+  type: string
+  required: true
+  group: "Models"
+- variable: models.capacity
+  default: 100Gi
+  required: true
+  description: "The volume size for PVC-based deployments"
+  label: "Volume Size"
+  type: string
+  group: "Models"
+- variable: models.reclaimPolicy
+  default: Retain
+  description: "The Volume Reclaim Policy"
+  label: "Reclaim Policy"
+  type: string
+  group: "Models"
+- variable: comfy.image
+  default: bcdurden/comfy:latest
+  description: "The container image for Comfy UI"
+  label: "Comfy UI Image"
+  type: string
+  group: "Comfy"
+- variable: comfy.enabled
+  default: true
+  description: "This flag enables ComfyUI as a container and service"
+  label: "Comfy UI Enable"
+  type: boolean
+  group: "Comfy"
+- variable: automatic1111.image
+  default: bcdurden/automatic1111:latest
+  description: "The container image for Automatic1111"
+  label: "Automatic1111 Image"
+  type: string
+  group: "Automatic1111"
+- variable: automatic1111.enabled
+  default: true
+  description: "This flag enables Automatic1111 as a container and service"
+  label: "Automatic1111 Enable"
+  type: boolean
+  group: "Automatic1111"

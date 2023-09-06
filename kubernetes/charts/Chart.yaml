@@ -1,0 +1,4 @@
+apiVersion: v1
+description: Template for Automatic1111 and ComfyUI Kubernetes application
+name: sd-ui
+version: 0.0.1
