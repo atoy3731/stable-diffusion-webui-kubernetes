@@ -2,7 +2,7 @@ namespace: stable-diffusion
 
 models:
   image: harbor.atoy.dev/public/sd-downloads:latest
-  volumeType: hostPath    
+  # volumeType: hostPath
   hostPath:
     localDirectory: /sd-data
   pvcName: pvc-sd-data
