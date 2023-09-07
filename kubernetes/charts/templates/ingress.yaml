@@ -4,7 +4,6 @@ kind: Ingress
 metadata:
   annotations: {}
   name: sd
-  namespace: {{ .Values.namespace }}
 spec:
   rules:
     {{- if .Values.automatic1111.enabled }}

@@ -7,7 +7,6 @@ metadata:
   annotations: {}
   labels:
     app: app.stablediffusion
-  namespace: default
 spec:
   strategy:
     type: Recreate
