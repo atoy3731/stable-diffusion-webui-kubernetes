@@ -26,8 +26,3 @@ spec:
   resources:
     requests:
       storage: {{ .Values.models.capacity }}
-  storageClassName: {{ .Values.storageClass }}
-  volumeMode: Filesystem
-  {{- if eq .Values.models.volumeType "hostPath" }}
-  volumeName: pv-sd-data
-  {{- end }}
