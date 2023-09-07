@@ -1,25 +1,8 @@
-{{- if eq .Values.models.volumeType "hostPath" }}
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: pv-sd-data
-spec:
-  accessModes:
-    - ReadWriteOnce
-  capacity:
-    storage: {{ .Values.models.capacity }}
-  hostPath:
-    path: /sd-data
-    type: DirectoryOrCreate
-  persistentVolumeReclaimPolicy: {{ .Values.models.reclaimPolicy }}
-  volumeMode: Filesystem
-{{- end }}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: {{ .Values.models.pvcName }}
-  namespace: {{ .Values.namespace }}
 spec:
   accessModes:
     - ReadWriteOnce
