@@ -3,11 +3,11 @@ namespace: stable-diffusion
 models:
   image: harbor.atoy.dev/public/sd-downloads:latest
   # volumeType: hostPath
-  hostPath:
-    localDirectory: /sd-data
+  # hostPath:
+  #   localDirectory: /sd-data
   pvcName: pvc-sd-data
   reclaimPolicy: Retain
-  capacity: 100Gi
+  capacity: 50Gi
   storageClass: ''
   pullPolicy: IfNotPresent
 
