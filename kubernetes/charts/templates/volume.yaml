@@ -1,4 +1,4 @@
-{{- if eq $.Values.models.volumeType "hostPath" }}
+{{- if eq .Values.models.volumeType "hostPath" }}
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -28,6 +28,6 @@ spec:
       storage: {{ .Values.models.capacity }}
   storageClassName: {{ .Values.storageClass }}
   volumeMode: Filesystem
-  {{- if eq $.Values.models.volumeType "hostPath" }}
+  {{- if eq .Values.models.volumeType "hostPath" }}
   volumeName: pv-sd-data
   {{- end }}
