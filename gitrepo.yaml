@@ -1,0 +1,16 @@
+kind: GitRepo
+apiVersion: fleet.cattle.io/v1alpha1
+metadata:
+  name: cloudflared
+  namespace: fleet-default
+spec:
+  repo: ssh://git@git-ssh.atoy.lol/home/cloudflared.git
+  clientSecretName: private-key
+  branch: main
+  targets:
+  - name: main
+    clusterSelector:
+      matchLabels:
+        cluster: main
+  paths:
+  - ./kubernetes

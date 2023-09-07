@@ -1,0 +1,7 @@
+defaultNamespace: stable-diffusion
+
+helm:
+  chart: git::https://github.com/atoy3731/stable-diffusion-webui-kubernetes.git//kubernetes/charts
+  releaseName: stable-diffusion
+  # valuesFiles:
+  # - values.yaml

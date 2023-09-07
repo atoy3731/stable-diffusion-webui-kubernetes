@@ -1,7 +1,7 @@
-namespace: default
+namespace: stable-diffusion
 
 models:
-  image: bcdurden/sd-downloads:latest
+  image: harbor.atoy.dev/public/sd-downloads:latest
   volumeType: hostPath    
   hostPath:
     localDirectory: /sd-data
@@ -16,17 +16,17 @@ service:
 
 ingress:
   enabled: true
-  automatic1111Host: automatic1111.sienarfleet.systems
-  comfyHost: comfy.sienarfleet.systems
+  automatic1111Host: automatic1111.atoy.lol
+  comfyHost: comfy.atoy.lol
 
 comfy:
-  image: bcdurden/comfy:latest
+  image: harbor.atoy.dev/public/comfy:latest
   enabled: true
   cli_args: 
   - --port
   - "8081"
 automatic1111:
-  image: bcdurden/automatic1111:latest
+  image: harbor.atoy.dev/public/automatic1111:latest
   enabled: true
   cli_args: 
   - --port 

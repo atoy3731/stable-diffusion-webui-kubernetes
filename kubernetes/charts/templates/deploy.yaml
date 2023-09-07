@@ -20,7 +20,9 @@ spec:
         app: app.stablediffusion
       namespace: default
     spec:
+      {{- if not .Values.useCpu }}
       runtimeClassName: nvidia
+      {{- end }}
       containers:
         {{- if .Values.comfy.enabled  }}
         - name: comfyui
@@ -33,7 +35,10 @@ spec:
             - python 
             - -u 
             - main.py
-            - --listen 
+            - --listen
+            {{- if not .Values.useCpu }}
+            - --cpu
+            {{- end }}
 {{ toYaml .Values.comfy.cli_args | indent 12 }}
           volumeMounts:
             - name: sd-data
@@ -52,10 +57,16 @@ spec:
             - webui.py
             - --listen 
             - --allow-code 
-            - --medvram 
-            - --xformers 
+            - --medvram
             - --enable-insecure-extension-access 
-            - --api 
+            - --api
+            {{- if .Values.useCpu }}
+            - --no-half
+            - --precision
+            - full
+            {{- else }}
+            - --xformers
+            {{- end }}
 {{ toYaml .Values.automatic1111.cli_args | indent 12 }}
           {{- end }}
           volumeMounts:
