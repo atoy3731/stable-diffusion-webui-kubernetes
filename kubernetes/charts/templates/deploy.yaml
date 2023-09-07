@@ -36,7 +36,7 @@ spec:
             - -u 
             - main.py
             - --listen
-            {{- if not .Values.useCpu }}
+            {{- if .Values.useCpu }}
             - --cpu
             {{- end }}
 {{ toYaml .Values.comfy.cli_args | indent 12 }}

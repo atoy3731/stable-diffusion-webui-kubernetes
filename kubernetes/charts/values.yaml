@@ -31,3 +31,5 @@ automatic1111:
   cli_args: 
   - --port 
   - "8080"
+
+useCpu: true
