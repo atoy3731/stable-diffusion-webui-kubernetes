@@ -1,5 +1,5 @@
 models:
-  image: harbor.atoy.dev/public/sd-downloads:latest
+  image: harbor.atoy.dev/public/stablediffusion/download:latest
   # volumeType: hostPath
   # hostPath:
   #   localDirectory: /sd-data
@@ -18,13 +18,13 @@ ingress:
   comfyHost: comfy.atoy.lol
 
 comfy:
-  image: harbor.atoy.dev/public/comfy:latest
+  image: harbor.atoy.dev/public/stablediffusion/comfy:latest
   enabled: true
   cli_args: 
   - --port
   - "8081"
 automatic1111:
-  image: harbor.atoy.dev/public/automatic1111:latest
+  image: harbor.atoy.dev/public/stablediffusion/automatic1111:latest
   enabled: true
   cli_args: 
   - --port 
