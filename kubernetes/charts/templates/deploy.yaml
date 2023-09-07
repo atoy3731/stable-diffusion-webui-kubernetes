@@ -93,4 +93,6 @@ spec:
         - persistentVolumeClaim:
             claimName: {{ .Values.models.pvcName }}
           name: sd-data
+        - name: sd-output
+          emptyDir: {}
   replicas: 1
